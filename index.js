@@ -34,7 +34,15 @@ app.get('/api', (req, res) => {
 app.get('/api/:date', (req, res) => {
 	var date_string = req.params.date;
 
-	if (/-/.test(date_string)) {
+	if (!(/-/.test(date_string))) {
+		let date = new Date(parseInt(date_string));
+		if (date.toString() === "Invalid Date")
+			res.json({ error: "Invalid Date" });
+		else {
+			res.json({ unix: parseInt(date_string), utc: date.toUTCString() });
+		}
+	}
+	else {
 		let date = new Date(date_string);
 		if (date.toString() === "Invalid Date")
 			res.json({ error: "Invalid Date" });
@@ -42,14 +50,6 @@ app.get('/api/:date', (req, res) => {
 			let unixTimestamp = Date.parse(date);
 			let utc = date.toUTCString();
 			res.json({ unix: unixTimestamp, utc: utc });
-		}
-	}
-	else {
-		let date = new Date(parseInt(date_string));
-		if (date.toString() === "Invalid Date")
-			res.json({ error: "Invalid Date" });
-		else {
-			res.json({ unix: parseInt(date_string), utc: date.toUTCString() });
 		}
 	}
 });
