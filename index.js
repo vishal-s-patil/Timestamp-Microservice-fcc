@@ -34,7 +34,7 @@ app.get('/api', (req, res) => {
 app.get('/api/:date', (req, res) => {
 	var date_string = req.params.date;
 
-	if ((/\d*/.test(date_string))) {
+	if ((/\d{5,}/.test(date_string))) {
 		let date = new Date(parseInt(date_string));
 		if (date.toString() === "Invalid Date")
 			res.json({ error: "Invalid Date" });
